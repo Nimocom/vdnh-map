@@ -32,14 +32,14 @@ public class CameraController : MonoBehaviour
 
 	void LateUpdate()
 	{
-		if (EventSystem.current.IsPointerOverGameObject())
-			return;
-
 
 		if (target)
 		{
 			if (Input.GetMouseButton(1))
 			{
+				if (EventSystem.current.IsPointerOverGameObject())
+					return;
+
 				x += Input.GetAxis("Mouse X") * xSpeed * 0.02f;
 				y -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f;
 			}

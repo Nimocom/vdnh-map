@@ -9,7 +9,10 @@ public class InfoPanel : MonoBehaviour
     [SerializeField] TextMeshProUGUI type;
     [SerializeField] TextMeshProUGUI description;
 
-    Marker currentMarker;
+    Building currentBuilding;
+    Camera mainCamera;
+
+   // Marker currentMarker;
 
     private void Awake()
     {
@@ -20,21 +23,22 @@ public class InfoPanel : MonoBehaviour
     void Start()
     {
         gameObject.SetActive(false);
+        mainCamera = Camera.main;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!currentMarker)
+        if (!currentBuilding)
             return;
 
-        transform.position = currentMarker.transform.position;
+        transform.position = mainCamera.WorldToScreenPoint(currentBuilding.transform.position);
     }
 
-    public void ShowPanel(Marker marker)
+    public void ShowPanel(Building building)
     {
-        Building building = marker.building;
-        currentMarker = marker;
+        currentBuilding = building;
 
         type.SetText(building.PlaceData.properties.type);
         description.SetText(building.PlaceData.properties.title);

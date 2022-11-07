@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -26,26 +26,33 @@ public class RouteBuilder : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        RouteList routeList = new RouteList();
-        routeList.Routes = new List<Route>();
-        Route route = new Route();
-        route.MaxPeople = 3;
-        route.MinCost = 100;
-        route.RouteDescription = "????????";
-        route.RouteName = "???";
-        route.IsOnTransport = 0;
-        route.IsForOVZ = 0;
-        route.MinAge = 16;
-        route.Points = new int[] { 0, 0, 0 };
-        route.TimeInMinutes = 60;
-        route.Tags = new List<string>();
-        route.Tags.Add("?????");
+        //RouteList routeList = new RouteList();
+        //routeList.Routes = new List<Route>();
+        //Route route = new Route();
 
-        routeList.Routes.Add(route);
+        //route.MaxVisitorsAmount = 12;
+        //route.TimeInMinutes = 30;
+        //route.BudgetStatus = 0;
+        //route.MinimalAge = 8;
 
-        string jsonStr = JsonUtility.ToJson(routeList);
+        //route.TransportStatus = 0;
+        //route.AreaStatus = 0;
+        //route.HVSSTatus = 0;
 
-        System.IO.File.WriteAllText(@"E:/RoutesExample.json", jsonStr);
+        //route.RouteDescription = "Описание";
+        //route.RouteName = "Название";
+
+
+        //route.Points = new int[] { 0, 0, 0 };
+
+        //route.Tags = new List<string>();
+        ////route.Tags.Add("");
+
+        //routeList.Routes.Add(route);
+
+        //string jsonStr = JsonUtility.ToJson(routeList);
+
+        //System.IO.File.WriteAllText(@"E:/RoutesExample.json", jsonStr);
     }
 
     // Update is called once per frame
@@ -80,12 +87,20 @@ public class RouteBuilder : MonoBehaviour
 
         for (int i = 0; i < activeRoute.Points.Length; i++)
         {
-            routeBuildings.Add(buildings.Single(x => x.PlaceData.properties.id == activeRoute.Points[i]));
+            var building = buildings.SingleOrDefault(x => x.PlaceData.properties.id == activeRoute.Points[i]);
+
+            if (building == null)
+                return;
+
+            routeBuildings.Add(building);
         }
 
         agent.Warp(routeBuildings[currentPoint].point.position);
+
         currentPoint++;
+
         agent.SetDestination(routeBuildings[currentPoint].point.position);
+
         isMoving = true;
     }
 }

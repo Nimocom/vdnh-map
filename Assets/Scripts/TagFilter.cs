@@ -1,18 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using TMPro;
 
-public class TagFilter : MonoBehaviour
+public class TagFilter : MonoBehaviour, IPointerDownHandler
 {
-    // Start is called before the first frame update
-    void Start()
+    TextMeshProUGUI textComponent;
+
+    bool isSelected;
+
+    private void Awake()
     {
-        
+        textComponent = GetComponent<TextMeshProUGUI>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnPointerDown(PointerEventData eventData)
     {
-        
+        isSelected = !isSelected;
+
+        textComponent.color = isSelected ? Color.black : Color.white;
+
+        FilterWindow.Instance.SetTag(textComponent.text);
     }
 }

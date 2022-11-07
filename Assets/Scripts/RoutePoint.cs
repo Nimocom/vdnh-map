@@ -6,10 +6,17 @@ using TMPro;
 public class RoutePoint : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI routePoint;
+    [SerializeField] GameObject arrow;
+
+    Building building;
 
 
-    public void SetRouteName(string routeName)
+    public void InitializePoint(Building building, bool isLastPoint = false)
     {
-        routePoint.SetText(routeName);  
+        this.building = building;
+
+        routePoint.SetText(building.PlaceData.properties.title);
+
+        arrow.SetActive(!isLastPoint);
     }
 }

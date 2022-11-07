@@ -21,6 +21,9 @@ public class SearchManager : MonoBehaviour
     public void ShowSearchPanel()
     {
         searchPanel.SetActive(true);
+
+        if (!PlacesWindow.Instance.isOpened)
+            PlacesWindow.Instance.SwitchState();
     }
 
     public void HideSearchPanel()

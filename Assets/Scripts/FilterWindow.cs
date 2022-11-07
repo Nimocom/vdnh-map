@@ -1,36 +1,32 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class FilterWindow : MonoBehaviour
 {
-    public static FilterWindow Instance;    
-
-    bool isExpanded;
-
-    Animation animationComponent;
+    public static FilterWindow Instance;
 
     public FilterSettings ActiveSettings;
+
+    public static bool isExpanded;
+
+    Animation animationComponent;
 
     private void Awake()
     {
         Instance = this;
 
         animationComponent = GetComponent<Animation>();
+
+       // ActiveSettings = new FilterSettings();
+        ActiveSettings.Tags = new List<string>();
     }
 
-
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void SwitchToAdvancedSettings()
@@ -39,54 +35,165 @@ public class FilterWindow : MonoBehaviour
         animationComponent.Play(!isExpanded ? "FilterHide" : "FilterShow");
     }
 
-    public void SetMaxPeople(Slider slider)
+    public void SetVisitorsAmount(Slider slider)
     {
-        ActiveSettings.People = (int)slider.value;
-    }
+        int option = (int)slider.value;
 
-    public void SetAge(Slider slider)
-    {
-        ActiveSettings.Age = (int)slider.value;
-    }
+        TextMeshProUGUI val = slider.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
 
-    public void SetCost(Slider slider)
-    {
-    ActiveSettings.Cost = (int)slider.value;    
+        val.SetText(option.ToString());
+
+        ActiveSettings.VisitorsAmount = option;
+
+        RoutesWindow.Instance.Filter();
     }
 
     public void SetAvailableTime(Slider slider)
     {
-        ActiveSettings.TimeInMinutes = (int)slider.value;
+        int option = (int)slider.value;
+
+        TextMeshProUGUI val = slider.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+
+        if (option == 0)
+        {
+            val.SetText("Меньше 30 ч.");
+            ActiveSettings.AvailableTime = 29;
+        }
+        else if (option == 1)
+        {
+            val.SetText("Меньше часа");
+            ActiveSettings.AvailableTime = 59;
+        }
+        else if (option == 2)
+        {
+            val.SetText("Меньше 2 ч.");
+            ActiveSettings.AvailableTime = 119;
+        }
+        else if (option == 3)
+        {
+            val.SetText("Меньше 5 ч.");
+            ActiveSettings.AvailableTime = 299;
+        }
+        else if (option == 4)
+        {
+            val.SetText("Неограничено");
+            ActiveSettings.AvailableTime = 9999;
+        }
+
+        //ActiveSettings.AvailableTime = option;
+
+        RoutesWindow.Instance.Filter();
     }
-    public void SetTransportPref(Slider slider)
+
+    public void SetBudget(Slider slider)
     {
-        ActiveSettings.IsOnTransport = (int)slider.value;
+        int option = (int)slider.value;
+
+        TextMeshProUGUI val = slider.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+
+        if (option == 0)
+            val.SetText("Нет");
+        else if (option == 1)
+            val.SetText("Малый");
+        else if (option == 2)
+            val.SetText("Средний");
+        else if (option == 3)
+            val.SetText("Большой");
+        else if (option == 4)
+            val.SetText("Неограничен");
+
+        ActiveSettings.Budget = option;
+
+        RoutesWindow.Instance.Filter();
     }
-    public void SetOVZPref(Slider slider)
+
+    public void SetAge(Slider slider)
     {
-        ActiveSettings.IsForOVZ = (int)slider.value;
+        int option = (int)slider.value;
+
+        TextMeshProUGUI val = slider.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+
+        if (option == 0)
+        {
+            val.SetText("Меньше 12");
+            ActiveSettings.Age = 11;
+        }
+        else if (option == 1)
+        {
+            val.SetText("Меньше 18");
+            ActiveSettings.Age = 17;
+        }
+        else if (option == 2)
+        {
+            val.SetText("Меньше 24");
+            ActiveSettings.Age = 23;
+        }
+        else if (option == 3)
+        {
+            val.SetText("Меньше 40");
+            ActiveSettings.Age = 39;
+        }
+        else if (option == 4)
+        {
+            val.SetText("Меньше 100");
+            ActiveSettings.Age = 99;
+        }
+
+        //tiveSettings.Age = option;
+
+        RoutesWindow.Instance.Filter();
+    }
+
+    public void SetTransportPreferences(TMPro.TMP_Dropdown dropdown)
+    {
+        ActiveSettings.TransportPreferences = (int)dropdown.value;
+        RoutesWindow.Instance.Filter();
+    }
+
+    public void SetAreaPreferences(TMPro.TMP_Dropdown dropdown)
+    {
+        ActiveSettings.AreaPreferences = (int)dropdown.value;
+        RoutesWindow.Instance.Filter();
+    }
+
+    public void SetVHSStatus(TMPro.TMP_Dropdown dropdown)
+    {
+        ActiveSettings.IsForHVS = (int)dropdown.value;
+        RoutesWindow.Instance.Filter();
     }
 
     public void SetTag(string tag)
     {
+        if (ActiveSettings.Tags.Contains(tag))
+        {
+            ActiveSettings.Tags.Remove(tag);
+            RoutesWindow.Instance.Filter();
+            return;
+        }
+
         ActiveSettings.Tags.Add(tag);
+
+        RoutesWindow.Instance.Filter();
     }
 
     public void ResetTags()
     {
         ActiveSettings.Tags.Clear();
+        RoutesWindow.Instance.Filter();
     }
 }
 
+[System.Serializable]
 public class FilterSettings
 {
-    public int People;
-    public int Cost;
-    public int TimeInMinutes;
+    public int VisitorsAmount;
+    public int AvailableTime;
+    public int Budget;
     public int Age;
-    public int IsOnTransport;
-    public int IsForOVZ;
-    public int IsOutside;
+
+    public int TransportPreferences;
+    public int AreaPreferences;
+    public int IsForHVS;
 
     public List<string> Tags;
 }

@@ -1,4 +1,3 @@
-// Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
 using System.Collections.Generic;
 
 [System.Serializable]
@@ -61,18 +60,20 @@ public class Route
     public string RouteName;
     public string RouteDescription;
 
-    public int MaxPeople;
-    public int MinCost;
+    public int MaxVisitorsAmount;
     public int TimeInMinutes;
-    public int MinAge;
-    public int IsOnTransport;
-    public int IsForOVZ;
+    public int BudgetStatus;
+    public int MinimalAge;
+
+    public int TransportStatus;
+    public int AreaStatus;
+    public int HVSSTatus;
 
     public List<string> Tags;
 
     public int[] Points;
-
 }
+
 [System.Serializable]
 public class RouteList
 {

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 
-public class Marker : MonoBehaviour, IPointerDownHandler
+public class Marker : MonoBehaviour
 {
     [SerializeField] RawImage rawImage;
 
@@ -44,9 +44,9 @@ public class Marker : MonoBehaviour, IPointerDownHandler
         this.building = building;
         rawImage.texture = MarkersManager.Instance.GetBuildingImageByType(building.PlaceData.properties.type);
     }
-
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        InfoPanel.Instance.ShowPanel(this);
-    }
 }
+//    public void OnPointerDown(PointerEventData eventData)
+//    {
+//        InfoPanel.Instance.ShowPanel(this);
+//    }
+//}

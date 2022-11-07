@@ -5,8 +5,20 @@ using UnityEngine.EventSystems;
 
 public class CameraTarget : MonoBehaviour
 {
-    Transform cameraTransform;
+    public static CameraTarget Instance;
+
     [SerializeField] float speed;
+
+    Transform cameraTransform;
+    Coroutine lookAtCoroutine;
+
+    bool isBlocked;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -16,11 +28,17 @@ public class CameraTarget : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isBlocked)
+            return;
+
         if (EventSystem.current.IsPointerOverGameObject())
             return;
 
         if (!Input.GetMouseButton(0))
             return;
+
+        //if (lookAtCoroutine != null)
+        //    StopCoroutine(lookAtCoroutine);
 
         float x = Input.GetAxis("Mouse X");
         float y = Input.GetAxis("Mouse Y");
@@ -32,5 +50,28 @@ public class CameraTarget : MonoBehaviour
         var cameraRelativeEulers = Quaternion.Euler(0, cameraAngle, 0);
 
         transform.Translate(cameraRelativeEulers * movementVector * speed * Time.deltaTime);
-    } 
+    }
+
+    public void LookAt(Vector3 position)
+    {
+        isBlocked = true;
+
+        if (lookAtCoroutine != null)
+            StopCoroutine(lookAtCoroutine);
+
+        position.y = 0f;
+
+        lookAtCoroutine = StartCoroutine(LerpToPoint(position));
+    }
+
+    private IEnumerator LerpToPoint(Vector3 position)
+    { 
+        while (Vector3.Distance(transform.position, position) > 0.01f)
+        {
+            transform.position = Vector3.Lerp(transform.position, position, 6f * Time.deltaTime);
+            yield return null;
+        }
+
+        isBlocked = false;
+    }
 }
