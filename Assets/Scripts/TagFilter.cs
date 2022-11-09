@@ -23,4 +23,9 @@ public class TagFilter : MonoBehaviour, IPointerDownHandler
 
         FilterWindow.Instance.SetTag(textComponent.text);
     }
+
+    public void InitializeTag(string text)
+    {
+        textComponent.SetText(text);
+    }
 }

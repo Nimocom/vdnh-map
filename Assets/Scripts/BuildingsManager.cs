@@ -49,6 +49,8 @@ public class BuildingsManager : MonoBehaviour
             //RouteBuilder.Instance.DrawPath(route);
             TermalZoneManager.Instance.GenerateData();
             PlacesWindow.Instance.LoadPlaces();
+            TagManager.Instance.InitializeTags(Buildings);
+            StartCoroutine(EventManager.Instance.InitializeEvents());
         }
     }
 }

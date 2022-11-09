@@ -42,8 +42,13 @@ public class PlacesWindow : MonoBehaviour
         animationComponent.Play(!isOpened ? "RoutesWindowHide" : "RoutesWindowShow");
 
         if (isOpened)
+        {
             if (RoutesWindow.Instance.isOpened)
                 RoutesWindow.Instance.SwitchState();
+            if (EventManager.Instance.isOpened)
+                EventManager.Instance.SwitchState();
+        }
+
     }
 
     public void Filter(TMPro.TMP_InputField filter)

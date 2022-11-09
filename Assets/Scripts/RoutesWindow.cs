@@ -95,8 +95,13 @@ public class RoutesWindow : MonoBehaviour
         animationComponent.Play(!isOpened ? "RoutesWindowHide" : "RoutesWindowShow");
 
         if (isOpened)
+        {
             if (PlacesWindow.Instance.isOpened)
                 PlacesWindow.Instance.SwitchState();
+            if (EventManager.Instance.isOpened)
+                EventManager.Instance.SwitchState();
+        }
+
     }
 
     public void Filter()

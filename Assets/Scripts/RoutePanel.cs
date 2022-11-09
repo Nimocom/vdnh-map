@@ -43,7 +43,7 @@ public class RoutePanel : MonoBehaviour, IPointerDownHandler
 
         for (int i = 0; i < route.Tags.Count; i++)
         {
-            finalString += route.Tags[i];
+            finalString += route.Tags[i] + " ";
         }
 
         tags.SetText(finalString);
